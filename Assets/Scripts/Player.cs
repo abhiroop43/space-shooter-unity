@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
   private float _playerVerticalLowerBound = -3.8f;
   private float _playerVerticalUpperBound = 0f;
 
+  private Transform _laserPrefab;
+
 
   // Start is called before the first frame update
   void Start()
@@ -21,6 +23,11 @@ public class Player : MonoBehaviour
   {
     MovePlayer();
     ConstrainPlayer();
+
+    if (Input.GetKeyDown(KeyCode.Space))
+    {
+      FireLaser();
+    }
   }
 
   private void MovePlayer()
@@ -58,6 +65,13 @@ public class Player : MonoBehaviour
                                                   _playerVerticalLowerBound,
                                                   _playerVerticalUpperBound),
                                       transform.position.z);
+  }
+
+  private void FireLaser()
+  {
+    Debug.Log("Chew Chew");
+    // Instantiate the laser prefab
+    // Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
   }
 
 }
