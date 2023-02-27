@@ -1,9 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+  [SerializeField]
+  private float _speed = 3.5f;
+  private float _playerHorizontalBound = 11f;
+  private float _playerVerticalLowerBound = -3.8f;
+  private float _playerVerticalUpperBound = 0f;
+
+
   // Start is called before the first frame update
   void Start()
   {
@@ -14,6 +19,45 @@ public class Player : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    transform.Translate(Vector3.right);
+    MovePlayer();
+    ConstrainPlayer();
   }
+
+  private void MovePlayer()
+  {
+    // Get the horizontal and vertical inputs.
+    float horizontalInput = Input.GetAxis("Horizontal");
+    float verticalInput = Input.GetAxis("Vertical");
+
+    // Create a vector to store the direction we want to move in.
+    var direction = new Vector3(horizontalInput, verticalInput, 0);
+
+    // Move the player in that direction.
+    transform.Translate(direction * _speed * Time.deltaTime);
+  }
+
+  private void ConstrainPlayer()
+  {
+    // Horizontal bounds
+    if (transform.position.x > _playerHorizontalBound)
+    {
+      transform.position = new Vector3(-_playerHorizontalBound,
+                                        transform.position.y,
+                                        transform.position.z);
+    }
+    else if (transform.position.x < -_playerHorizontalBound)
+    {
+      transform.position = new Vector3(_playerHorizontalBound,
+                                        transform.position.y,
+                                        transform.position.z);
+    }
+
+    // Vertical bounds
+    transform.position = new Vector3(transform.position.x,
+                                      Mathf.Clamp(transform.position.y,
+                                                  _playerVerticalLowerBound,
+                                                  _playerVerticalUpperBound),
+                                      transform.position.z);
+  }
+
 }
