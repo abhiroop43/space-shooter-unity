@@ -7,8 +7,13 @@ public class Player : MonoBehaviour
   private float _playerHorizontalBound = 11f;
   private float _playerVerticalLowerBound = -3.8f;
   private float _playerVerticalUpperBound = 0f;
+  private float _canFire = -1f;
 
-  private Transform _laserPrefab;
+  [SerializeField]
+  private float _fireRate = 0.15f;
+
+  [SerializeField]
+  private GameObject _laserPrefab;
 
 
   // Start is called before the first frame update
@@ -23,8 +28,7 @@ public class Player : MonoBehaviour
   {
     MovePlayer();
     ConstrainPlayer();
-
-    if (Input.GetKeyDown(KeyCode.Space))
+    if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
     {
       FireLaser();
     }
@@ -37,7 +41,9 @@ public class Player : MonoBehaviour
     float verticalInput = Input.GetAxis("Vertical");
 
     // Create a vector to store the direction we want to move in.
-    var direction = new Vector3(horizontalInput, verticalInput, 0);
+    var direction = new Vector3(horizontalInput,
+                                verticalInput,
+                                0);
 
     // Move the player in that direction.
     transform.Translate(direction * _speed * Time.deltaTime);
@@ -69,9 +75,12 @@ public class Player : MonoBehaviour
 
   private void FireLaser()
   {
-    Debug.Log("Chew Chew");
+    _canFire = Time.time + _fireRate;
+
     // Instantiate the laser prefab
-    // Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+    Instantiate(_laserPrefab,
+                  transform.position + new Vector3(0, 0.8f, 0),
+                  Quaternion.identity);
   }
 
 }
