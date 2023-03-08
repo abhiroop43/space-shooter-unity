@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
   {
     // take the current position and assign a start position
     transform.position = new Vector3(0, 0, 0);
-    _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+    _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
     if (_spawnManager == null)
     {
