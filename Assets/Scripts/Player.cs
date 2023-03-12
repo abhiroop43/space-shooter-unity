@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
   private int _lives = 3;
   private SpawnManager _spawnManager;
 
+  [SerializeField]
   private bool isTripleShotActive = false;
 
 
@@ -96,7 +97,7 @@ public class Player : MonoBehaviour
     {
       // Instantiate the triple shot prefab
       Instantiate(_tripleShotPrefab,
-                  transform.position,
+                  transform.position + new Vector3(-0.79f, 1.05f, 0),
                   Quaternion.identity);
     }
     else
