@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -117,6 +118,18 @@ public class Player : MonoBehaviour
       _spawnManager.OnPlayerDeath();
       Destroy(this.gameObject);
     }
+  }
+
+  public void TripleShotActive()
+  {
+    isTripleShotActive = true;
+    StartCoroutine(TripleShotPowerDownRoutine());
+  }
+
+  IEnumerator TripleShotPowerDownRoutine()
+  {
+    yield return new WaitForSeconds(5.0f);
+    isTripleShotActive = false;
   }
 
 }
