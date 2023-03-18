@@ -7,6 +7,9 @@ public class SpawnManager : MonoBehaviour
   private GameObject _enemyPrefab;
 
   [SerializeField]
+  private GameObject _tripleShotPowerupPrefab;
+
+  [SerializeField]
   private GameObject _enemyContainer;
 
   private bool _stopSpawning = false;
@@ -15,6 +18,7 @@ public class SpawnManager : MonoBehaviour
   void Start()
   {
     StartCoroutine(SpawnEnemyRoutine());
+    StartCoroutine(SpawnPowerUpRoutine());
   }
 
   // Update is called once per frame
@@ -37,10 +41,21 @@ public class SpawnManager : MonoBehaviour
     }
   }
 
+  // spawn powerup every 30-60 seconds
+  IEnumerator SpawnPowerUpRoutine()
+  {
+    while (_stopSpawning == false)
+    {
+      float xPosition = Random.Range(-8f, 8f);
+      Vector3 positionToSpawn = new Vector3(xPosition, 7, 0);
+      Instantiate(_tripleShotPowerupPrefab, positionToSpawn, Quaternion.identity);
+      yield return new WaitForSeconds(Random.Range(30.0f, 60.0f));
+    }
+  }
+
+
   public void OnPlayerDeath()
   {
     _stopSpawning = true;
   }
-
-  // spawn powerups
 }

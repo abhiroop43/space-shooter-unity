@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
   private SpawnManager _spawnManager;
 
   [SerializeField]
-  private bool isTripleShotActive = false;
+  private bool _isTripleShotActive = false;
 
 
   // Start is called before the first frame update
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     float verticalInput = Input.GetAxis("Vertical");
 
     // Create a vector to store the direction we want to move in.
-    var direction = new Vector3(horizontalInput,
+    Vector3 direction = new Vector3(horizontalInput,
                                 verticalInput,
                                 0);
 
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
   {
     _canFire = Time.time + _fireRate;
 
-    if (isTripleShotActive)
+    if (_isTripleShotActive)
     {
       // Instantiate the triple shot prefab
       Instantiate(_tripleShotPrefab,
@@ -122,14 +122,14 @@ public class Player : MonoBehaviour
 
   public void TripleShotActive()
   {
-    isTripleShotActive = true;
+    _isTripleShotActive = true;
     StartCoroutine(TripleShotPowerDownRoutine());
   }
 
   IEnumerator TripleShotPowerDownRoutine()
   {
     yield return new WaitForSeconds(5.0f);
-    isTripleShotActive = false;
+    _isTripleShotActive = false;
   }
 
 }
