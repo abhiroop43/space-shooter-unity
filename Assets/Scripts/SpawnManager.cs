@@ -7,10 +7,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyPrefab;
 
     [SerializeField]
-    private GameObject _tripleShotPowerupPrefab;
+    private GameObject[] powerups;
 
-    [SerializeField]
-    private GameObject _speedBoostPowerupPrefab;
 
     [SerializeField]
     private GameObject _enemyContainer;
@@ -44,15 +42,16 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    // spawn powerup every 30-60 seconds
+    // spawn powerup every 30-45 seconds
     IEnumerator SpawnPowerUpRoutine()
     {
         while (_stopSpawning == false)
         {
             float xPosition = Random.Range(-8f, 8f);
+            int randomPowerup = Random.Range(0, 2);
             Vector3 positionToSpawn = new Vector3(xPosition, 7, 0);
-            Instantiate(_tripleShotPowerupPrefab, positionToSpawn, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(30.0f, 60.0f));
+            Instantiate(powerups[randomPowerup], positionToSpawn, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(30.0f, 45.0f));
         }
     }
 
