@@ -37,6 +37,11 @@ public class Player : MonoBehaviour
   [SerializeField]
   private bool _isShieldActive = false;
 
+  [SerializeField]
+  private int _score;
+
+  private UIManager _uiManager;
+
 
   // Start is called before the first frame update
   void Start()
@@ -48,6 +53,13 @@ public class Player : MonoBehaviour
     if (_spawnManager == null)
     {
       Debug.LogError("SpawnManager is NULL");
+    }
+
+    _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+    if (_uiManager == null)
+    {
+      Debug.LogError("UIManager is NULL");
     }
   }
 
@@ -178,6 +190,12 @@ public class Player : MonoBehaviour
   {
     yield return new WaitForSeconds(10.0f);
     _isShieldActive = false;
+  }
+
+  public void AddScore(int points)
+  {
+    _score += points;
+    _uiManager.UpdateScore(_score);
   }
 
 }
