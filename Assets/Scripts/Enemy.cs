@@ -41,18 +41,20 @@ public class Enemy : MonoBehaviour
             {
                 var player = other.transform.GetComponent<Player>();
                 if (player != null) player.Damage();
+                _animator.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                Destroy(gameObject, 2.4f);
                 break;
             }
             case "Laser":
             {
                 Destroy(other.gameObject);
                 if (_player != null) _player.AddScore(10);
+                _animator.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                Destroy(gameObject, 2.4f);
                 break;
             }
         }
-        _animator.SetTrigger("OnEnemyDeath");
-        _speed = 0;
-        Destroy(gameObject, 2.4f);
-
     }
 }
