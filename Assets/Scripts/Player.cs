@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Random = System.Random;
 
 public class Player : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _tripleShotPrefab;
 
     [SerializeField] private GameObject _shieldVisualizer;
+
+    [SerializeField] private GameObject _leftEngine;
+    [SerializeField] private GameObject _rightEngine;
 
     [SerializeField] private int _lives = 3;
     private SpawnManager _spawnManager;
@@ -118,6 +122,30 @@ public class Player : MonoBehaviour
 
         _lives--;
         _uiManager.UpdateLives(_lives);
+        
+        // set damage visualizer
+        var engineSide = (new Random()).Next(0, 2);
+
+        if (_leftEngine.activeInHierarchy)
+        {
+            _rightEngine.SetActive(true);
+        }
+        else if (_rightEngine.activeInHierarchy)
+        {
+            _leftEngine.SetActive(true);
+        }
+        else
+        {
+            if (engineSide == 0)
+            {
+                _leftEngine.SetActive(true);
+            }
+            else
+            {
+                _rightEngine.SetActive(true);
+            }
+        }
+        
         if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
