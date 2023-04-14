@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using Random = System.Random;
 
 public class Player : MonoBehaviour
 {
@@ -124,7 +123,7 @@ public class Player : MonoBehaviour
         _uiManager.UpdateLives(_lives);
         
         // set damage visualizer
-        var engineSide = (new Random()).Next(0, 2);
+        var engineSide = (new System.Random()).Next(0, 2);
 
         if (_leftEngine.activeInHierarchy)
         {
