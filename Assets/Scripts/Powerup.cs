@@ -1,59 +1,50 @@
+using System;
 using UnityEngine;
 
 public class Powerup : MonoBehaviour
 {
-  [SerializeField]
-  private float _speed = 3f;
+    [SerializeField] private float _speed = 3f;
 
-  // ID for Powerup
-  [SerializeField]
-  private int powerupId;
+    // ID for Powerup
+    [SerializeField] private int powerupId;
+    [SerializeField] private AudioClip _clip;
 
-  // Start is called before the first frame update
-  void Start()
-  {
-
-  }
-
-  // Update is called once per frame
-  void Update()
-  {
-    // move down at 3m/s
-    MoveDown();
-
-    // when leaving the screen, destroy this object
-    if (transform.position.y < -6f)
+    // Update is called once per frame
+    private void Update()
     {
-      Destroy(this.gameObject);
+        // move down at 3m/s
+        MoveDown();
+
+        // when leaving the screen, destroy this object
+        if (transform.position.y < -6f) Destroy(gameObject);
     }
-  }
 
-  private void MoveDown()
-  {
-    transform.Translate(Vector3.down * _speed * Time.deltaTime);
-  }
-
-  private void OnTriggerEnter2D(Collider2D other)
-  {
-    if (other.tag == "Player")
+    private void MoveDown()
     {
-      Player player = other.GetComponent<Player>();
-      if (player != null)
-      {
-        switch (powerupId)
+        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
         {
-          case 0:
-            player.TripleShotActive();
-            break;
-          case 1:
-            player.SpeedBoostActive();
-            break;
-          case 2:
-            player.ShieldActive();
-            break;
+            var player = other.GetComponent<Player>();
+            AudioSource.PlayClipAtPoint(_clip, transform.position, 1f);
+            if (player != null)
+                switch (powerupId)
+                {
+                    case 0:
+                        player.TripleShotActive();
+                        break;
+                    case 1:
+                        player.SpeedBoostActive();
+                        break;
+                    case 2:
+                        player.ShieldActive();
+                        break;
+                }
+
+            Destroy(gameObject);
         }
-      }
-      Destroy(this.gameObject);
     }
-  }
 }

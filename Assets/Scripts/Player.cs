@@ -35,6 +35,9 @@ public class Player : MonoBehaviour
 
     private UIManager _uiManager;
 
+    [SerializeField] private AudioClip _fireLaserAudioClip;
+    
+    private AudioSource _audioSource;
 
     // Start is called before the first frame update
     private void Start()
@@ -48,6 +51,17 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
         if (_uiManager == null) Debug.LogError("UIManager is NULL");
+
+        _audioSource = GetComponent<AudioSource>();
+
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on the Player is NULL");
+        }
+        else
+        {
+            _audioSource.clip = _fireLaserAudioClip;
+        }
     }
 
     // Update is called once per frame
@@ -107,6 +121,9 @@ public class Player : MonoBehaviour
             Instantiate(_laserPrefab,
                 transform.position + new Vector3(0, 1.05f, 0),
                 Quaternion.identity);
+
+        // play laser audio clip
+        _audioSource.Play();
     }
 
     public void Damage()
