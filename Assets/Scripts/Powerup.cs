@@ -29,6 +29,7 @@ public class Powerup : MonoBehaviour
         if (other.tag == "Player")
         {
             var player = other.GetComponent<Player>();
+            // FIXME: volume is low
             AudioSource.PlayClipAtPoint(_clip, transform.position, 1f);
             if (player != null)
                 switch (powerupId)

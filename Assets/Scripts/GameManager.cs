@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
   [SerializeField]
-  private bool _isGameOver = false;
+  private bool _isGameOver;
 
   private void Update()
   {
@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
     {
       // reload the current scene
       SceneManager.LoadScene(1, LoadSceneMode.Single);
+    }
+
+    if (Input.GetKeyDown(KeyCode.Escape))
+    {
+        Application.Quit();
     }
   }
 

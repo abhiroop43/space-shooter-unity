@@ -3,6 +3,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed = 4f;
+    [SerializeField] private GameObject _enemyLaserPrefab;
+    [SerializeField] private float _enemyFireRate = 3f;
+    [SerializeField] private float _canFire = -1f;
 
     private Player _player;
     private Animator _animator;
@@ -22,6 +25,21 @@ public class Enemy : MonoBehaviour
 
     // Update is called once per frame
     private void Update()
+    {
+        CalculateMovement();
+
+        if (!(Time.time > _canFire)) return;
+        _enemyFireRate = Random.Range(3f, 7f);
+        _canFire = Time.time + _enemyFireRate;
+        var enemyGameObject = Instantiate(_enemyLaserPrefab, transform.position, Quaternion.identity);
+        var enemyLasers = enemyGameObject.GetComponentsInChildren<Laser>();
+
+        foreach (var enemyLaser in enemyLasers) enemyLaser.AssignEnemyLaser();
+
+        // Debug.Break();
+    }
+
+    private void CalculateMovement()
     {
         // move down at 4 m/s
         var direction = new Vector3(0, -1, 0);
@@ -52,12 +70,21 @@ public class Enemy : MonoBehaviour
             }
             case "Laser":
             {
-                Destroy(other.gameObject);
-                if (_player != null) _player.AddScore(10);
-                _animator.SetTrigger("OnEnemyDeath");
-                _speed = 0;
-                _audioSource.Play();
-                Destroy(gameObject, 2.4f);
+                var laser = other.transform.GetComponent<Laser>();
+                if (!laser.IsEnemyLaser())
+                {
+                    Destroy(other.gameObject);
+                    if (_player != null) _player.AddScore(10);
+                    _animator.SetTrigger("OnEnemyDeath");
+                    _speed = 0;
+                    _audioSource.Play();
+
+                    // fix for destroyed enemy being attacked issue
+                    Destroy(GetComponent<Collider2D>());
+
+                    Destroy(gameObject, 2.4f);
+                }
+
                 break;
             }
         }
